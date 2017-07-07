@@ -16,6 +16,12 @@ public class Application {
 
     @RequestMapping("/")
     public String hello(){
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return "Hello";
     }
 }

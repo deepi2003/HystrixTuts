@@ -1,0 +1,9 @@
+hystrix:
+  command:
+    getHello:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1
