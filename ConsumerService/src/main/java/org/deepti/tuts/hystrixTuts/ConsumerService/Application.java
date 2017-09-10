@@ -30,6 +30,7 @@ public class Application {
 
     @RequestMapping("/consumer")
     public String getHello() {
+        System.out.println(" consumer end point executed");
         return consumerService.getHello();
 
     }
