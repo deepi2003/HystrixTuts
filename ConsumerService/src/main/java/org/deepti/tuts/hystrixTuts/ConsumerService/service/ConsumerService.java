@@ -7,12 +7,16 @@ import com.netflix.hystrix.HystrixThreadPoolKey;
 import com.netflix.hystrix.HystrixThreadPoolMetrics;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.sql.Time;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ConsumerService {
@@ -60,4 +64,22 @@ public class ConsumerService {
         return HystrixThreadPoolKey.Factory.asKey("test");
     }
 
+
+    @HystrixCommand(fallbackMethod = "asyncFallback")
+    public Future<String> asyncMethod() {
+        return new AsyncResult<String>() {
+            @Override
+            public String invoke() {
+                System.out.println(" Start invoke");
+                URI uri = URI.create("http://localhost:5678/async");
+                String res =  restTemplate.getForObject(uri, String.class);
+                System.out.println(" invoke done");
+                return res;
+            }
+        };
+    }
+
+    private String asyncFallback() {
+        return "Async Fallback";
+    }
 }

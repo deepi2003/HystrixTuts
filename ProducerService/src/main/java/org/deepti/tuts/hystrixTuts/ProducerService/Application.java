@@ -24,5 +24,17 @@ public class Application {
         }
         return "Hello";
     }
+
+    @RequestMapping("/async")
+    public String async(){
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Async response";
+    }
+
 }
 
